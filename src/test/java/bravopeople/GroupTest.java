@@ -1,21 +1,33 @@
 package bravopeople;
 
-import junit.framework.TestCase;
+import org.junit.Test;
+import org.junit.BeforeClass;
+import java.util.ArrayList;
 
-public class GroupTest extends TestCase
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+
+public class GroupTest
 {
-    public GroupTest(String testName) { super(testName); }
+    public static Group testGroup;
+    //public static ArrayList<PersonEntity> subGroups;
 
-    /**
-     *
-     * TODO: Add proper tests once code is in place.
-     * Tests
-     *  - Contructor name is same as getName
-     */
+    @BeforeClass
+    public static void setup(){
+        testGroup = new Group("Testing Group", new ArrayList<PersonEntity>());
+    }
+
+    @Test
     public void testGroup()
     {
-        Group test = new Group();
-        test.setName("testName");
-        assertEquals("testName", test.getName());
+        assertTrue(testGroup.getName().equals("Testing Group"));
+    }
+
+    @Test
+    public void test_Group_Null_String(){
+        testGroup.setName(null);
+        assertNotNull("Cannot assign a null value to a name.", testGroup.getName());
     }
 }
