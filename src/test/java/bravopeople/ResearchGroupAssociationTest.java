@@ -1,12 +1,12 @@
 package bravopeople;
 
-import java.util.Date;
-
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.Date;
+
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class ResearchGroupAssociationTest
 {
@@ -20,21 +20,47 @@ public class ResearchGroupAssociationTest
         d = new Date();
     }
 
+    /**
+     * Checks if the default constructor works
+     */
     @Test
-    public void test_RGA_Creation_NullValues()
+    public void test_RGA_Creation_DefaultValues()
     {
+        ResearchGroupAssociation test = new ResearchGroupAssociation();
+        assertNotNull("Creation of researchGroupAssociation failed.", test);
+        assertNotNull("A Default ResearchGroupAssociation should always have a start date, not null.", test.getStartDate());
+        assertNull("A Default ResearchGroupAssociation should always have a null end date.", test.getEndDate());
+        assertTrue("Default of MEMBER not assigned.", test.getRole().equals("Member"));
+        assertNotNull("A Default ResearchGroupAssociation should always have a group, not null.", test.getGroup());
+
+        assertTrue("A Default ResearchGroupAssociation should always be active.", test.isActive());
+    }
+
+
+    /**
+     * Checks if the parametrised constructor works
+     */
+    @Test
+    public void test_RGA_Creation_NullValues() {
         test = new ResearchGroupAssociation(null, null, "");
         assertNotNull("Creation of researchGroupAssociation failed.", test);
-        assertTrue("Default to ROLE as student failed.", test.getRole().equals("Student"));
-        assertNull("A ResearchGroupAssociation should always have a start date, not null.", test);
-        assertNull("A ResearchGroupAssociation should always have a group, not null.", test);
+        assertNotNull("A ResearchGroupAssociation should always have a start date, not null.", test.getStartDate());
+        assertNull("A ResearchGroupAssociation should always have a null end date.", test.getEndDate());
+        assertTrue("Student not assigned as role.", test.getRole().equals("Student"));
+        assertNotNull("A Default ResearchGroupAssociation should always have a group, not null.", test.getGroup());
+        assertTrue("A Default ResearchGroupAssociation should always be active.", test.isActive());
     }
 
     @Test
     public void test_RGA_Creation_GoodValues(){
         test = new ResearchGroupAssociation(d, mockedGroup, "Groupleader");
         assertTrue("Initialization of role was not successful.", test.getRole().equals("Groupleader"));
-        assertNotNull("Active status is never set/initialized", test.isActive());
+
+        try {
+            Boolean active = test.isActive();
+        } catch (Exception ex) {
+            fail("NullPointerException for active status. The active status is never set/initialized");
+        }
     }
 
     @Test
