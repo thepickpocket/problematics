@@ -35,6 +35,16 @@ public class OrganisationTest
     }
 
     /**
+     * Tests
+     *  - Contructor name is same as getName
+     */
+    @Test
+    public void testOrganisationTwo() {
+        Organisation test = new Organisation("Only a Name");
+        assertEquals("Only a Name", test.getName());
+    }
+
+    /**
      * Tests if the organisation was created
      */
     @Test
