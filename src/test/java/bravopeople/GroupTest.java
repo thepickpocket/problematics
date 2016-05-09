@@ -1,11 +1,12 @@
 package bravopeople;
 
-import org.junit.Test;
 import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
 
 public class GroupTest
 {
@@ -26,6 +27,22 @@ public class GroupTest
         Group testGroup1 = new Group("Testing Group", mockedPeople);
         assertTrue(testGroup1.getName().equals("Testing Group"));
         assertTrue(testGroup1.getEntities().size() == numMockedPeople);
+    }
+
+    @Test
+    public void test_Group_Entities_Setter() {
+        Group testGroup1 = new Group();
+        testGroup1.setName("Testing Group");
+        testGroup1.setEntities(mockedPeople);
+        assertTrue("setName method not correct or adding invalid", testGroup1.getName().equals("Testing Group"));
+        assertTrue("setEntities method not correct or adding invalid", testGroup1.getEntities().size() == numMockedPeople);
+    }
+
+    @Test
+    public void test_Group_Creation_Default() {
+        Group testGroup1 = new Group();
+        assertTrue("Default constructor not correctly initialising values", testGroup1.getName().equals("MockGroup"));
+        assertTrue("Default constructor not correctly initialising values", testGroup1.getEntities().size() == 0);
     }
 
     @Test
