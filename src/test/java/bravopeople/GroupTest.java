@@ -4,9 +4,7 @@ import org.junit.Test;
 import org.junit.BeforeClass;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class GroupTest
@@ -25,8 +23,15 @@ public class GroupTest
     @Test
     public void test_Group_Creation()
     {
-        assertTrue(testGroup.getName().equals("Testing Group"));
-        assertTrue(testGroup.getEntities().size() == numMockedPeople);
+        Group testGroup1 = new Group("Testing Group", mockedPeople);
+        assertTrue(testGroup1.getName().equals("Testing Group"));
+        assertTrue(testGroup1.getEntities().size() == numMockedPeople);
+    }
+
+    @Test
+    public void test_Group_Creation_Null(){
+        Group testGroup1 = new Group(null, null);
+        assertNull("The name and/or list of person entities should never be able to be Null.", testGroup1);
     }
 
 
