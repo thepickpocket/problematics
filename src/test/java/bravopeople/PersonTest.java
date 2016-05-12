@@ -184,7 +184,7 @@ public class PersonTest
     }
     
     @Test
-    public void test_SetResearch_GroupAssociation(){
+    public void test_SetMultiple_Research_GroupAssociation(){
             
         
         //Test adding 100 research groups
@@ -234,7 +234,7 @@ public class PersonTest
 
     }
      @Test
-    public void test_SetResearchCategory(){
+    public void test_SetMultiple_ResearchCategory(){
             
             
         //Test adding 100 research groups
