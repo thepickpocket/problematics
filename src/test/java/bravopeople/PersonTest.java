@@ -2,6 +2,11 @@ package bravopeople;
 
 import java.sql.Date;
 import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -21,7 +26,7 @@ public class PersonTest
     
     @Before
     public void setUp(){
-        test = new Person("name", "surname", "id", "email");
+        test = new Person("name", "surname", "id", "email@gamil.com");
         orgMock = mock(Organisation.class);
         researchGroupMock = mock(ResearchGroupAssociation.class);
         groupMock = mock(Group.class);
@@ -34,158 +39,221 @@ public class PersonTest
      *  - Contructor params are same as gets
      */
     @Test
-    public void testPerson()
+    public void test_Person_Creation()
     {
-        
-        assertEquals("name", test.getName());
-        assertEquals("surname", test.getSurname());
-        assertEquals("id", test.getID());
-        assertEquals("email", test.getEmail());
+        assertFalse("Initialization of person's name was not successful.", !test.getName().equals("name"));
+        assertFalse("Initialization of person's surname was not successful.", !test.getSurname().equals("surname"));
+        assertFalse("Initialization of person's id was not successful.", !test.getID().equals("id"));
+        assertFalse("Initialization of person's email was  not successful.", !test.getEmail().equals("email@gamil.com"));
     }
     
     @Test
-    public void testSetUserRightsDefault(){
+    public void test_Set_User_RightsDefault(){
         //Default
+        try{
         test.setUserRights("Random1234514");
-        assertEquals("RESEARCHER", test.getUserRights());
+        }
+        catch(Exception e){
+            fail(e.getMessage());
+        }
+        assertFalse("Default User right test 1 failed", !test.getUserRights().equals("RESEARCHER"));
+        //assertEquals("RESEARCHER", test.getUserRights());
         
-        //Checking if Set to null
-        test.setUserRights(null);
-        assertEquals("RESEARCHER", test.getUserRights());
-        
+        try{
         test.setUserRights("");
-        assertEquals("RESEARCHER", test.getUserRights());
+        }
+        catch(Exception e){
+            fail(e.getMessage());
+        }
+        assertFalse("Default User right test 2 failed", !test.getUserRights().equals("RESEARCHER"));
+        //assertEquals("RESEARCHER", test.getUserRights());
+        
+        
     }
     
     @Test
-    public void testsetUserRightsToCorrectValue(){
+    public void test_Set_User_Rights_Null(){
+
+        //Checking if Set to null
+        try{
+        test.setUserRights(null);
+        }
+        catch(Exception e){
+            fail(e.getMessage());
+        }
+      assertFalse("Setting user rights to null failed", !test.getUserRights().equals("RESEARCHER"));
+    }
+    
+    @Test
+    public void test_Set_User_Rights_CorrectValue(){
         //Test Setting the value
-        
+        try{
         test.setUserRights("ADMIN");
-        assertEquals("ADMIN", test.getUserRights());
+        }
+        catch(Exception e){
+            fail(e.getMessage());
+        }
+        assertFalse("CorrectValue User right test 1 failed", !test.getUserRights().equals("ADMIN"));
         
+        
+        try{
         test.setUserRights("RESEARCHGROUPLEADER");
-        assertEquals("RESEARCHGROUPLEADER", test.getUserRights());
+        assertFalse("CorrectValue User right test 2 failed", !test.getUserRights().equals("RESEARCHGROUPLEADER"));
+        }
+        catch(Exception e){
+            fail(e.getMessage());
+        }
         
+        try{
         test.setUserRights("RESEARCHER");
-        assertEquals("RESEARCHER", test.getUserRights());
+        assertFalse("CorrectValue User right test 3 failed", !test.getUserRights().equals("RESEARCHER"));
+        }
+        catch(Exception e){
+            fail(e.getMessage());
+        }
     }
     
     @Test
-    public void testSetOrganisationWithStringParameter(){
-        test.setOrganisation("Test");
-        assertEquals("Test", test.getOrganisation().getName());
-        
-      
+    public void test_SetOrganisation_WithStringParameter(){
+        try{
+            test.setOrganisation("Test");
+        }
+        catch(Exception e){ 
+            fail(e.getMessage());
+        }
+        assertFalse("CorrectValue User organization was not set", !test.getOrganisation().getName().equals("Test"));
     }
     
      @Test
-    public void testSetOrganisationWithOrganizationAsParameter(){
+    public void test_SetOrganisation_WithOrganizationAsParameter(){
         //Organisation orgMock = mock(Organisation.class);
         when(orgMock.getName()).thenReturn("Org1");
+        try{
         test.setOrganisation(orgMock);
-        assertEquals(orgMock, test.getOrganisation());
-        assertEquals("Org1", test.getOrganisation().getName()); 
+        }
+        catch(Exception e){ 
+            fail(e.getMessage());
+        }
+        assertFalse("Organization set incorrectly", !test.getOrganisation().equals(orgMock));
+        assertFalse("Organization name set incorrectly", !test.getOrganisation().getName().equals("Org1")); 
+        
     }
     
-    @Ignore //No way of getting all organizatins
+    //@Ignore 
     @Test
-    public void testSetMultipleOrganisations(){
-          //Test adding 10 organizations
+    public void test_SetMultiple_Organisations(){
+          //Test adding 100 organizations
         
-        for(int i =0; i < 10; i++){
+        for(int i =0; i < 100; i++){
             when(orgMock.getName()).thenReturn("O" + i);
-            test.setOrganisation(orgMock);
-            //assertEquals("O"+i, test.getOrganisation().getName());
+            try{
+                test.setOrganisation(orgMock);
+             }
+            catch(Exception e){ 
+                fail(e.getMessage());
+        }
         }
         
-        for(int i =0; i < 10; i++){
-            //assertEquals("O"+i, test.getOrganization());
-            //
+        for(int i =0; i < 100; i++){
+            //No way of getting all organizatins
+            fail("No way of getting all organizations");
         }
     }
     
     @Test
-    public void testSetSingleResearchGroupAssociation(){
+    public void test_SetSingle_ResearchGroupAssociation(){
             
         
         //Test adding 1 research group
-
             when(researchGroupMock.getStartDate()).thenReturn(Date.valueOf("2016-01-01"));
             when(researchGroupMock.getEndDate()).thenReturn(Date.valueOf("2016-02-01"));
             when(researchGroupMock.getGroup()).thenReturn(groupMock);
-            when(researchGroupMock.getRole()).thenReturn("STUDENT");
+            when(researchGroupMock.getRole()).thenReturn("STUDENT");  
+            try{               
             test.setResearchGroupAssociation(researchGroupMock);
-        
+            }
+            catch(Exception e ){
+               fail(e.toString());
+            }
  
-            assertEquals(Date.valueOf("2016-01-01"), test.getResearchGroupAssociation().get(0).getStartDate());
-            assertEquals(Date.valueOf("2016-02-02"), test.getResearchGroupAssociation().get(0).getEndDate());
-            assertEquals(groupMock, test.getResearchGroupAssociation().get(0).getGroup());
-            assertEquals("Student", test.getResearchGroupAssociation().get(0).getRole());
+
+            assertFalse("Start date error",!test.getResearchGroupAssociation().get(0).getStartDate().equals(Date.valueOf("2016-01-01")));
+            assertFalse("End date error",!test.getResearchGroupAssociation().get(0).getEndDate().equals(this));
+            assertFalse("Setting group error", !test.getResearchGroupAssociation().get(0).getGroup().equals(groupMock));
+            assertFalse("Setting reasearch group error", !test.getResearchGroupAssociation().get(0).getRole().equals("Student"));
     }
     
     @Test
-    public void testSetResearchGroupAssociation(){
+    public void test_SetResearch_GroupAssociation(){
             
         
-        //Test adding 10 research groups
-        System.out.println(Date.valueOf("2016-01-"+(9+1)));
-        for(int i =0; i <= 10; i++){
-            System.out.println(Date.valueOf("2016-01-"+(i+1)));
+        //Test adding 100 research groups
+            
+        try{
+        for(int i =0; i <= 100; i++){
             when(researchGroupMock.getStartDate()).thenReturn(Date.valueOf("2016-01-"+(i+1)));
             when(researchGroupMock.getEndDate()).thenReturn(Date.valueOf("2016-02-"+(i+1)));
             when(researchGroupMock.getGroup()).thenReturn(groupMock);
-            when(researchGroupMock.getRole()).thenReturn("STUDENT");
+            when(researchGroupMock.getRole()).thenReturn("Srudent");
             test.setResearchGroupAssociation(researchGroupMock);
-            //assertEquals("O"+i, test.getOrganisation().getName());
+        }
+        }
+        catch(Exception e){
+            fail(e.toString());
         }
         
-        for(int i =0; i < 10; i++){
-            assertEquals(Date.valueOf("2016-01-0"+(i+1)), test.getResearchGroupAssociation().get(i).getStartDate());
-            assertEquals(Date.valueOf("2016-02-0"+(i+1)), test.getResearchGroupAssociation().get(i).getEndDate());
-            assertEquals(groupMock, test.getResearchGroupAssociation().get(i).getGroup());
-            assertEquals("Student", test.getResearchGroupAssociation().get(i).getRole());
-            //
+        for(int i =0; i < 100; i++){
+            assertFalse("Start date error", !test.getResearchGroupAssociation().get(i).getStartDate().equals(Date.valueOf("2016-01-0"+(i+1))));
+            assertFalse("End date error",  !test.getResearchGroupAssociation().get(i).getEndDate().equals(Date.valueOf("2016-02-0"+(i+1))));
+            assertFalse("Setting group error", !test.getResearchGroupAssociation().get(i).getGroup().equals(groupMock));
+            assertFalse("Setting reasearch group error", !test.getResearchGroupAssociation().get(i).getRole().equals("Student"));
+            
         }
     }
     
     @Test
-    public void testSetSingleResearchCategory(){
+    public void test_SetSingle_ResearchCategory(){
             
         
         //Test adding 1 research category
             when(researchCatMock.getDate()).thenReturn(Date.valueOf("2016-01-01"));
             when(researchCatMock.getID()).thenReturn("ID"+0);
             when(researchCatMock.getName()).thenReturn("MockResearchCategory");
+        try{
+           
             test.setResearchCategory(researchCatMock);
 
-        
+        }
+        catch(Exception e){
+           fail(e.toString());
+        }
 
-            assertEquals("ID"+0, test.getResearchCategory().get(0).getID());
-            assertEquals(Date.valueOf("2016-01-01"), test.getResearchCategory().get(0).getDate());
-            assertEquals("MockResearchCategory", test.getResearchCategory().get(0).getName());
+            assertFalse("Setting ID error", !test.getResearchCategory().get(0).getID().equals("ID"+0));
+            assertFalse("Setting date error", !test.getResearchCategory().get(0).getDate().equals(Date.valueOf("2016-01-01")));
+            assertFalse("Setting research category error", !test.getResearchCategory().get(0).getName().equals("MockResearchCategory"));
 
     }
      @Test
-    public void testSetResearchCategory(){
+    public void test_SetResearchCategory(){
             
-        
-        //Test adding 10 research groups
-        System.out.println(Date.valueOf("2016-01-"+(9+1)));
-        for(int i =0; i <= 10; i++){
-            System.out.println(Date.valueOf("2016-01-"+(i+1)));
+            
+        //Test adding 100 research groups
+        try{
+        for(int i =0; i <= 100; i++){
             when(researchCatMock.getDate()).thenReturn(Date.valueOf("2016-01-"+(i+1)));
             when(researchCatMock.getID()).thenReturn("ID"+i);
             when(researchCatMock.getName()).thenReturn("MockResearchCategory");
             test.setResearchCategory(researchCatMock);
-            //assertEquals("O"+i, test.getOrganisation().getName());
         }
-        
-        for(int i =0; i < 10; i++){
-            assertEquals("ID"+i, test.getResearchCategory().get(i).getID());
-            assertEquals(Date.valueOf("2016-01-0"+(i+1)), test.getResearchCategory().get(i).getDate());
-            assertEquals("MockResearchCategory", test.getResearchCategory().get(i).getName());
-            //
+        }
+        catch(Exception e){
+             fail(e.toString());
+        }
+        for(int i =0; i < 100; i++){
+      
+            assertFalse("Setting ID error", !test.getResearchCategory().get(0).getID().equals("ID"+0));
+            assertFalse("Setting date error", !test.getResearchCategory().get(0).getDate().equals(Date.valueOf("2016-01-0"+(i+1))));
+            assertFalse("Setting research category error", !test.getResearchCategory().get(0).getName().equals("MockResearchCategory"));
         }
     }
 }
