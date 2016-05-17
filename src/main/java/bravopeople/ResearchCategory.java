@@ -32,6 +32,11 @@ public class ResearchCategory implements ResearchCategoryInterface
         effectiveDate = _date;
     }
 
+    public ResearchCategory(String _id, String _name)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public String getName()
     {
         return name;
@@ -62,33 +67,12 @@ public class ResearchCategory implements ResearchCategoryInterface
         effectiveDate = _date;
     }
 
-
-    public double getResearchOuputTarget(int id)
+    public void addNewResearcherCategoryState(double outputTarget, Date date)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void setResearchOuputTarget(int id, double outputTarget)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void setDateForResearchOutput(int id, Date date)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public Date getDateForResearchOutput(int id)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void addNewResearchOutputTarget(double outputTarget, Date date)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public void removeResearchOutputTarget(int id)
+    public void removeResearcherCategoryState(int id)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

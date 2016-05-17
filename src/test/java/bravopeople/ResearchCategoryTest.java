@@ -1,6 +1,7 @@
 package bravopeople;
 
 import static bravopeople.GroupTest.mockedPeople;
+import java.util.Calendar;
 import junit.framework.TestCase;
 
 import java.util.Date;
@@ -18,27 +19,40 @@ public class ResearchCategoryTest extends TestCase
         super(testName);
     }
 
-    //----------------------------------------------------Testing object creaion-----------------------------------------------
-    //Testing the creation of the object with no parameters - hence default constructor
-    //Test C1
-    @Test
-    public void test_Category_Creation_Default()
-    {
-        ResearchCategory testCat = new ResearchCategory();
-        assertTrue("ID not correctly set", testCat.getID().equals("dummy12345"));
-        assertTrue("Name not correctly set", testCat.getName().equals("dummy"));
-    }
-
+    //--------------------------------------Test the constructors-------------------------------
     //Testing the creation of the object with valid parameters
-    //Test C2
+    //Test C1
     @Test
     public void test_Category_Creation_Valid()
     {
-        Date date = new Date();
-        ResearchCategory testCat = new ResearchCategory("ID01", "Testing Category", date);
-        assertTrue("ID does not match the constructor parameter", testCat.getID().equals("ID01"));
-        assertTrue("Name does not match the constructor parameter", testCat.getName().equals("Testing Category"));
-        assertTrue("Date does not match the constructor parameter", testCat.getDate().equals(date));
+        try
+        {
+            ResearchCategory testCat = new ResearchCategory("ID", "Name");
+            assertTrue("Name was not set succesfully", testCat.getName().equals("Name"));
+        }
+        catch (UnsupportedOperationException exc)
+        {
+            fail("C1 " + exc.getMessage());
+        }
+    }
+
+    //Testing the creation of the object with invalid parameters
+    //Test C2
+    @Test
+    public void test_Category_Creation_Invalid()
+    {
+        try
+        {
+            ResearchCategory testCat = new ResearchCategory("", "");
+            fail("No IllegalArgumentException thrown for C2");
+        }
+        catch (IllegalArgumentException e)
+        {
+        }
+        catch (UnsupportedOperationException exc)
+        {
+            fail("C2 " + exc.getMessage());
+        }
     }
 
     //Testing the creation of the object with null parameters
@@ -48,12 +62,15 @@ public class ResearchCategoryTest extends TestCase
     {
         try
         {
-            ResearchCategory testCat = new ResearchCategory(null, null, null);
-            fail("No excpetion thrown for C3");
+            ResearchCategory testCat = new ResearchCategory(null, null);
+            fail("No IllegalArgumentException thrown for C3");
         }
         catch (IllegalArgumentException e)
         {
-
+        }
+        catch (UnsupportedOperationException exc)
+        {
+            fail("C3 " + exc.getMessage());
         }
     }
 
@@ -69,8 +86,27 @@ public class ResearchCategoryTest extends TestCase
         assertTrue("Name was not updated succesfully", testCat.getName().equals("New01"));
     }
 
-    //Testing whether the name of a ResearchCategory object can be changed to a null name
+    //Testing whether the name of a ResearchCategory object can be changed to an invalid name
     //Test C5
+    @Test
+    public void test_Modifying_Category_Name_Invalid()
+    {
+        Date date = new Date();
+        ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
+        try
+        {
+            testCat.setName("");
+            fail("No IllegalArgumentException thrown for C5");
+        }
+        catch (IllegalArgumentException e)
+        {
+
+        }
+
+    }
+
+    //Testing whether the name of a ResearchCategory object can be changed to a null name
+    //Test C6
     @Test
     public void test_Modifying_Category_Name_Null()
     {
@@ -79,7 +115,7 @@ public class ResearchCategoryTest extends TestCase
         try
         {
             testCat.setName(null);
-            fail("No exception thrown for C5");
+            fail("No IllegalArgumentException thrown for C6");
         }
         catch (IllegalArgumentException e)
         {
@@ -88,116 +124,43 @@ public class ResearchCategoryTest extends TestCase
 
     }
 
-    //----------------------------------Test adding of new researchOutputTarget with effectiveDate--------------------------------
-    //Test whether one can add a new researchOutputTarget with effectiveDate, using valid parameters
-    //Test C6
-    @Test
-    public void test_Adding_New_ResearchOutputTarget_Valid()
-    {
-        try
-        {
-            Date date = new Date();
-            double outputTarget = 4;
-            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.addNewResearchOutputTarget(outputTarget, date);
-        }
-        catch (UnsupportedOperationException exc)
-        {
-            fail("C10 " + exc.getMessage());
-        }
-
-    }
-
-    //Test whether one can add a new researchOutputTarget with effectiveDate, using null parameters
+    //----------------------------------Test adding of new ResearcherCategoryState--------------------------------
+    //Test whether one can add a new ResearcherCategoryState, using valid parameters
     //Test C7
     @Test
-    public void test_Adding_New_ResearchOutputTarget_Null()
+    public void test_Adding_New_ResearcherCategoryState_Valid()
     {
         try
         {
             Date date = new Date();
-            double outputTarget = 4.0;
-            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.addNewResearchOutputTarget(outputTarget, null);
-            fail("No exception thrown for C11");
-        }
-        catch (UnsupportedOperationException exc)
-        {
-            fail("C11 " + exc.getMessage());
-        }
-        catch (IllegalArgumentException e)
-        {
-
-        }
-
-    }
-
-    //Test whether one can add a new researchOutputTarget with effectiveDate, using null parameters
-    //Test C8
-    @Test
-    public void test_Adding_New_ResearchOutputTarget_Invalid()
-    {
-        try
-        {
-            Date date = new Date();
-            double outputTarget = -4.0;
-            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.addNewResearchOutputTarget(outputTarget, date);
-            fail("No exception thrown for C11");
-        }
-        catch (UnsupportedOperationException exc)
-        {
-            fail("C11 " + exc.getMessage());
-        }
-        catch (IllegalArgumentException e)
-        {
-
-        }
-
-    }
-
-    //-------------------------------------Test modifying of researchOutputTarget for a specific date-------------------------------
-    //Test whether one can change the researchOutputTarget, associated with a specific date, with a valid parameter
-    //Test C9
-    @Test
-    public void test_Modifying_Output_Target_Valid()
-    {
-        try
-        {
-            Date date = new Date();
-            //id of the researchOutputTarget that should be updated
-            int id = 1;
             double outputTarget = 4;
             ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.setResearchOuputTarget(id, outputTarget);
-            assertTrue("OutputTarget was updated unsuccessfully", testCat.getResearchOuputTarget(id) == outputTarget);
-        }
-        catch (UnsupportedOperationException exc)
-        {
-            fail("C6 " + exc.getMessage());
-        }
-
-    }
-
-    //Test whether one can change the researchOutputTarget, associated with a specific date, with an invalid parameter
-    //Test C10
-    @Test
-    public void test_Modifying_ResearchOutput_Invalid()
-    {
-        try
-        {
-            Date date = new Date();
-            double outputTarget = -4.0;
-            //id of the researchOutputTarget that should be updated
-            int id = 1;
-            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.setResearchOuputTarget(id, outputTarget);
-            fail("No exception thrown for C7");
+            testCat.addNewResearcherCategoryState(outputTarget, date);
         }
         catch (UnsupportedOperationException exc)
         {
             fail("C7 " + exc.getMessage());
         }
+
+    }
+
+    //Test whether one can add a new ResearcherCategoryState, using invalid parameters
+    //Test C8
+    @Test
+    public void test_Adding_New_ResearcherCategoryState_InvalidOne()
+    {
+        try
+        {
+            Date date = new Date();
+            double outputTarget = -4.0;
+            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
+            testCat.addNewResearcherCategoryState(outputTarget, date);
+            fail("No exception thrown for C8");
+        }
+        catch (UnsupportedOperationException exc)
+        {
+            fail("C8 " + exc.getMessage());
+        }
         catch (IllegalArgumentException e)
         {
 
@@ -205,42 +168,24 @@ public class ResearchCategoryTest extends TestCase
 
     }
 
-    //----------------------------------Modifying the date for a specific researchOutputTarget--------------------------------
-    //Test whether one can change the date, associated with a specific researchOutputTarget, with a valid parameter
-    //Test C11
+    //Test whether one can add a new ResearcherCategoryState, using past dates
+    //Test C9
     @Test
-    public void test_Modifying_Date_For_ResearchOutput_Valid()
-    {
-        try
-        {
-            Date date = new Date();
-            double outputTarget = 4;
-            //id of the effeciveDate that should be updated
-            int id = 1;
-            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.setDateForResearchOutput(id, date);
-            assertTrue("Date for output target was updated unsuccessfully", testCat.getDateForResearchOutput(id).equals(date));
-        }
-        catch (UnsupportedOperationException exc)
-        {
-            fail("C8 " + exc.getMessage());
-        }
-
-    }
-
-    //Test whether one can change the date, associated with a specific researchOutputTarget, with a null parameter
-    //Test C12
-    @Test
-    public void test_Modifying_Date_For_ResearchOutput_Null()
+    public void test_Adding_New_ResearcherCategoryState_InvalidTwo()
     {
         try
         {
             Date date = new Date();
             double outputTarget = 4.0;
-            //id of the effeciveDate that should be updated
-            int id = 1;
             ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.setDateForResearchOutput(id, null);
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.MONTH, 9);
+            cal.set(Calendar.DATE, 24);
+            cal.set(Calendar.YEAR, 2013);
+            cal.set(Calendar.HOUR, 13);
+            cal.set(Calendar.MINUTE, 45);
+            cal.set(Calendar.SECOND, 52);
+            testCat.addNewResearcherCategoryState(outputTarget, cal.getTime());
             fail("No exception thrown for C9");
         }
         catch (UnsupportedOperationException exc)
@@ -254,19 +199,67 @@ public class ResearchCategoryTest extends TestCase
 
     }
 
-    //----------------------------------Test removing a researchOutputTarget--------------------------------
-    //Test whether one can remove a researchOutputTarget with effectiveDate
-    //Test C13
+    //Test whether one can add a new ResearcherCategoryState, using double dates
+    //Test C10
     @Test
-    public void test_Remove_ResearchOutputTarget()
+    public void test_Adding_New_ResearcherCategoryState_InvalidThree()
     {
         try
         {
             Date date = new Date();
-            double outputTarget = 4;
+            double outputTarget = 4.0;
+            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
+            testCat.addNewResearcherCategoryState(outputTarget, date);
+            testCat.addNewResearcherCategoryState(outputTarget, date);
+            fail("No exception thrown for C10");
+        }
+        catch (UnsupportedOperationException exc)
+        {
+            fail("C10 " + exc.getMessage());
+        }
+        catch (IllegalArgumentException e)
+        {
+
+        }
+
+    }
+
+    //Test whether one can add a new ResearcherCategoryState, using null date
+    //Test C11
+    @Test
+    public void test_Adding_New_ResearcherCategoryState_Null()
+    {
+        try
+        {
+            Date date = new Date();
+            double outputTarget = 4.0;
+            ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
+            testCat.addNewResearcherCategoryState(outputTarget, null);
+            fail("No exception thrown for C11");
+        }
+        catch (UnsupportedOperationException exc)
+        {
+            fail("C11 " + exc.getMessage());
+        }
+        catch (IllegalArgumentException e)
+        {
+
+        }
+
+    }
+   
+    //----------------------------------Test removing a ResearchCategoryState Object--------------------------------
+    //Test whether one can remove a researchOutputTarget with effectiveDate
+    //Test C12
+    @Test
+    public void test_Remove_ResearchCategoryState()
+    {
+        try
+        {
+            Date date = new Date();
             int id = 1;
             ResearchCategory testCat = new ResearchCategory("T01", "ValidCat", date);
-            testCat.removeResearchOutputTarget(id);
+            testCat.removeResearcherCategoryState(id);
         }
         catch (UnsupportedOperationException exc)
         {
