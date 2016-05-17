@@ -91,7 +91,7 @@ public class OrganisationTest
     /**
      * Test Case O7: Tests if the ID of the organisation cant be set to an empty string
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test//(expected = IllegalArgumentException.class)
     public void test_Organisation_ID_Empty_String() {
         try {
             testOrganisation.setID("");
@@ -115,7 +115,7 @@ public class OrganisationTest
     /**
      * Test Case  O9: Tests if the name of the organisation cant be set to an null string
      */
-    @Test(expected = IllegalArgumentException.class)
+    @Test//(expected = IllegalArgumentException.class)
     public void test_Organisation_Name_Null_String() {
         try {
             testOrganisation.setName(null);
